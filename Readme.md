@@ -21,7 +21,7 @@ go get github.com/gregorosaurus/goweatherflow
 ## Basic Usage
 
 To quickly get started, see the example code below:
-```
+```go
     server, err := goweatherflow.NewServer()
 	if err != nil {
 		log.Fatalln(err)

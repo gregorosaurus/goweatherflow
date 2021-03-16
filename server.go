@@ -21,11 +21,11 @@ type TempestServer struct {
 //NewServer creates a new server that will start listening
 //for new Tempest UDP events
 func NewServer() (*TempestServer, error) {
-	serverAddr, err := net.ResolveUDPAddr("udp", ":50222")
+	serverAddr, err := net.ResolveUDPAddr("udp4", ":50222")
 	if err != nil {
 		return nil, err
 	}
-	conn, err := net.ListenUDP("udp", serverAddr)
+	conn, err := net.ListenUDP("udp4", serverAddr)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +56,7 @@ func (server *TempestServer) startServer() {
 	buf := make([]byte, 1024)
 	for server.running {
 		server.conn.SetReadDeadline(time.Now().Add(time.Second * 10))
-		n, addr, err := server.conn.ReadFromUDP(buf)
+		n, _, _, addr, err := server.conn.ReadMsgUDP(buf, nil)
 		if err != nil {
 			//err was likely a timeout, we'll continue.
 			continue
@@ -71,7 +71,8 @@ func (server *TempestServer) startServer() {
 
 func (server *TempestServer) processData(addr net.Addr, data []byte) error {
 	stringData := string(data)
-	typeRegex := regexp.MustCompile("\"type\":\\s+\"(.*?)\"")
+	// fmt.Println(stringData)
+	typeRegex := regexp.MustCompile("\"type\":\\s*\"(.*?)\"")
 	typeMatches := typeRegex.FindStringSubmatch(stringData)
 	if len(typeMatches) != 2 {
 		return fmt.Errorf("Unable to find type in message")
