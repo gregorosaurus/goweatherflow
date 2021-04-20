@@ -13,8 +13,8 @@ type RainStartEvent struct {
 //Time returns the time of the rain start message
 func (msg RainStartEvent) Time() time.Time {
 	if len(msg.EVT) == 0 {
-		return time.Now()
+		return time.Now().UTC()
 	}
 
-	return time.Unix(int64(msg.EVT[0]), 0)
+	return time.Unix(int64(msg.EVT[0]), 0).UTC()
 }

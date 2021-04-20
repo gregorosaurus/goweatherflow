@@ -18,5 +18,5 @@ type HubStatus struct {
 
 //Time returns the time of the observation
 func (msg HubStatus) Time() time.Time {
-	return time.Unix(msg.TimeStamp, 0)
+	return time.Unix(msg.TimeStamp, 0).UTC()
 }

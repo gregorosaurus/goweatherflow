@@ -17,10 +17,10 @@ const TemperatureObservationMessageParameterCount = 18
 //Time returns the time of the observation
 func (msg TempestObservation) Time() time.Time {
 	if len(msg.ObservationData) == 0 {
-		return time.Now()
+		return time.Now().UTC()
 	}
 
-	return time.Unix(int64(msg.ObservationData[0][0]), 0)
+	return time.Unix(int64(msg.ObservationData[0][0]), 0).UTC()
 }
 
 //WindLull returns the wind lull for a mimum 3 second sample in metres per second.

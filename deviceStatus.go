@@ -18,5 +18,5 @@ type DeviceStatus struct {
 
 //Time returns the time of the observation
 func (msg DeviceStatus) Time() time.Time {
-	return time.Unix(msg.TimeStamp, 0)
+	return time.Unix(msg.TimeStamp, 0).UTC()
 }

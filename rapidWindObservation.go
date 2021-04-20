@@ -15,7 +15,7 @@ func (msg RapidWindObservation) Time() time.Time {
 		return time.Now()
 	}
 
-	return time.Unix(int64(msg.ObservationData[0]), 0)
+	return time.Unix(int64(msg.ObservationData[0]), 0).UTC()
 }
 
 //WindSpeed returns the wind speed in metres per second

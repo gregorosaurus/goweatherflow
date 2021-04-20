@@ -13,10 +13,10 @@ type LightningStrikeEvent struct {
 //Time returns the time of the lightning strike event
 func (msg LightningStrikeEvent) Time() time.Time {
 	if len(msg.EVT) == 0 {
-		return time.Now()
+		return time.Now().UTC()
 	}
 
-	return time.Unix(int64(msg.EVT[0]), 0)
+	return time.Unix(int64(msg.EVT[0]), 0).UTC()
 }
 
 //Distance returns the distance away the lightning strike was in km
