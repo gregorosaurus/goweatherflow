@@ -106,7 +106,7 @@ func (server *TempestServer) processData(addr net.Addr, data []byte) error {
 		msg := new(TempestObservation)
 		err := json.Unmarshal(data, msg)
 		if err != nil {
-			return fmt.Errorf("Unable to deserialize json message message: %s", err)
+			return fmt.Errorf("unable to deserialize json message message: %s", err)
 		}
 		server.ReceivedMessage <- msg
 	case "device_status":
