@@ -18,8 +18,8 @@ type TempestServer struct {
 	ReceivedMessage chan WeatherFlowMessage
 }
 
-//NewServer creates a new server that will start listening
-//for new Tempest UDP events
+// NewServer creates a new server that will start listening
+// for new Tempest UDP events
 func NewServer() (*TempestServer, error) {
 	serverAddr, err := net.ResolveUDPAddr("udp4", ":50222")
 	if err != nil {
@@ -38,8 +38,8 @@ func NewServer() (*TempestServer, error) {
 	return server, nil
 }
 
-//Start starts the server by spinning up a goroutine.
-//The function returns only after the server is stopped.
+// Start starts the server by spinning up a goroutine.
+// The function returns only after the server is stopped.
 func (server *TempestServer) Start() {
 	if server.running {
 		return
@@ -75,7 +75,7 @@ func (server *TempestServer) processData(addr net.Addr, data []byte) error {
 	typeRegex := regexp.MustCompile("\"type\":\\s*\"(.*?)\"")
 	typeMatches := typeRegex.FindStringSubmatch(stringData)
 	if len(typeMatches) != 2 {
-		return fmt.Errorf("Unable to find type in message")
+		return fmt.Errorf("unable to find type in message")
 	}
 
 	messageType := typeMatches[1]
@@ -85,21 +85,21 @@ func (server *TempestServer) processData(addr net.Addr, data []byte) error {
 		msg := new(RainStartEvent)
 		err := json.Unmarshal(data, msg)
 		if err != nil {
-			return fmt.Errorf("Unable to deserialize json message message: %s", err)
+			return fmt.Errorf("unable to deserialize json message message: %s", err)
 		}
 		server.ReceivedMessage <- msg
 	case "evt_strike":
 		msg := new(LightningStrikeEvent)
 		err := json.Unmarshal(data, msg)
 		if err != nil {
-			return fmt.Errorf("Unable to deserialize json message message: %s", err)
+			return fmt.Errorf("unable to deserialize json message message: %s", err)
 		}
 		server.ReceivedMessage <- msg
 	case "rapid_wind":
 		msg := new(RapidWindObservation)
 		err := json.Unmarshal(data, msg)
 		if err != nil {
-			return fmt.Errorf("Unable to deserialize json message message: %s", err)
+			return fmt.Errorf("unable to deserialize json message message: %s", err)
 		}
 		server.ReceivedMessage <- msg
 	case "obs_st":
@@ -113,32 +113,32 @@ func (server *TempestServer) processData(addr net.Addr, data []byte) error {
 		msg := new(DeviceStatus)
 		err := json.Unmarshal(data, msg)
 		if err != nil {
-			return fmt.Errorf("Unable to deserialize json message message: %s", err)
+			return fmt.Errorf("unable to deserialize json message message: %s", err)
 		}
 		server.ReceivedMessage <- msg
 	case "hub_status":
 		msg := new(HubStatus)
 		err := json.Unmarshal(data, msg)
 		if err != nil {
-			return fmt.Errorf("Unable to deserialize json message message: %s", err)
+			return fmt.Errorf("unable to deserialize json message message: %s", err)
 		}
 		server.ReceivedMessage <- msg
 	default:
-		return fmt.Errorf("Unknown message received: %s", messageType)
+		return fmt.Errorf("unknown message received: %s", messageType)
 	}
 
 	return nil
 }
 
-//Stop initiates the server stop.  This will wait until the server shuts down and
-//stops listening for messages.
+// Stop initiates the server stop.  This will wait until the server shuts down and
+// stops listening for messages.
 func (server *TempestServer) Stop() {
 	server.running = false
 	server.serverWaitGroup.Wait()
 }
 
-//Close closes the server.  Once close is called, the server can not
-//be reopened.
+// Close closes the server.  Once close is called, the server can not
+// be reopened.
 func (server *TempestServer) Close() error {
 	return server.conn.Close()
 }

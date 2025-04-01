@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-var WeatherFlowMessageLengthError error = fmt.Errorf("Invalid weather flow data length")
+var weatherFlowMessageLengthError error = fmt.Errorf("invalid weather flow data length")
 
 type WeatherFlowPrecipType int
 

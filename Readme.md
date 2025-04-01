@@ -31,7 +31,7 @@ To quickly get started, see the example code below:
     go func() {
 		for {
 			msg := <-server.ReceivedMessage
-			log.Println("recieved message new message!")
+			log.Println("received message new message!")
 			switch v := msg.(type) {
 			case *goweatherflow.TempestObservation:
 				log.Printf("Received observation from %s", v.SerialNumber)
